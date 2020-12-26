@@ -1,0 +1,54 @@
+{
+  "name": "pollen-solutions/contact-infos",
+  "description": "Contact Infos Component",
+  "homepage": "https://www.presstify.com/components/contact-infos/",
+  "keywords": [
+    "presstify",
+    "plugins",
+    "wordpress",
+    "contact",
+    "informations"
+  ],
+  "type": "presstify-plugin",
+  "time": "2020-12-26",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jordy Manner",
+      "email": "jordy@presstify.com",
+      "role": "Developper"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://composer.presstify.com/pollen-solutions/"
+    }
+  ],
+  "require": {
+    "composer/installers": "~1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.0"
+  },
+  "autoload": {
+    "files": [
+      "src/helpers.php"
+    ],
+    "psr-4": {
+      "Pollen\\ContactInfos\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Pollen\\ContactInfos\\Test\\": "tests"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config" : {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  }
+}
