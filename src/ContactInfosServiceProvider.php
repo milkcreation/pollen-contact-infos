@@ -30,7 +30,7 @@ class ContactInfosServiceProvider extends ServiceProvider
             if ($options = get_option('contact_infos') ?: null) {
                 $cinfos->config($options);
             }
-            return $cinfos->setAdapter($this->getContainer()->get(WordpressAdapter::class))->boot();
+            $cinfos->setAdapter($this->getContainer()->get(WordpressAdapter::class))->boot();
         });
     }
 
