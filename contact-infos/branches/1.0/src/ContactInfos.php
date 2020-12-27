@@ -85,9 +85,13 @@ class ContactInfos implements ContactInfosContract
     public function boot(): ContactInfosContract
     {
         if (!$this->isBooted()) {
+            events()->trigger('contact-infos.booting', [$this]);
+
             Metabox::registerDriver('contact-infos', (new ContactInfosMetabox())->setContactInfos($this));
 
             $this->setBooted();
+
+            events()->trigger('contact-infos.booted', [$this]);
         }
 
         return $this;
