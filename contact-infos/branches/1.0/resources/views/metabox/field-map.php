@@ -1,6 +1,6 @@
 <?php
 /**
- * @var tiFy\Contracts\Metabox\MetaboxView $this
+ * @var tiFy\Metabox\MetaboxViewInterface $this
  * @var Pollen\ContactInfos\Metabox\ContactInfosFieldBag $field
  */
 ?>

@@ -16,7 +16,7 @@ class ContactInfosFieldBag extends AbstractContactInfosBag
         $name = $this->get('name') ? : $this->getAlias();
         $group = $this->get('group');
 
-        return $this->metabox->name() . '[datas]' . ($group ? "[{$group}]" : '') . "[{$name}]";
+        return $this->metabox->getName() . '[datas]' . ($group ? "[{$group}]" : '') . "[{$name}]";
     }
 
     /**
@@ -31,7 +31,7 @@ class ContactInfosFieldBag extends AbstractContactInfosBag
         $name = $this->get('name') ? : $this->getAlias();
         $group = $this->get('group');
 
-        return $this->metabox->value('datas.' . ($group ? "{$group}." : '') . $name, $default);
+        return $this->metabox->getValue('datas.' . ($group ? "{$group}." : '') . $name, $default);
     }
 
     /**

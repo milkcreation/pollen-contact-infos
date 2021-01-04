@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Pollen\ContactInfos;
 
-use tiFy\Container\ServiceProvider;
 use Pollen\ContactInfos\Adapters\WordpressAdapter;
 use Pollen\ContactInfos\Contracts\ContactInfosContract;
+use Pollen\ContactInfos\Metabox\ContactInfosMetabox;
+use tiFy\Container\ServiceProvider;
+use tiFy\Metabox\Contracts\MetaboxContract;
 
 class ContactInfosServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,7 @@ class ContactInfosServiceProvider extends ServiceProvider
      */
     protected $provides = [
         ContactInfosContract::class,
+        ContactInfosMetabox::class,
         WordpressAdapter::class
     ];
 
@@ -46,6 +49,7 @@ class ContactInfosServiceProvider extends ServiceProvider
         });
 
         $this->registerAdapters();
+        $this->registerMetaboxDrivers();
     }
 
     /**
@@ -57,6 +61,21 @@ class ContactInfosServiceProvider extends ServiceProvider
     {
         $this->getContainer()->share(WordpressAdapter::class, function () {
             return new WordpressAdapter($this->getContainer()->get(ContactInfosContract::class));
+        });
+    }
+
+    /**
+     * Déclaration des metaboxes.
+     *
+     * @return void
+     */
+    public function registerMetaboxDrivers(): void
+    {
+        $this->getContainer()->add(ContactInfosMetabox::class, function () {
+            return new ContactInfosMetabox(
+                $this->getContainer()->get(ContactInfosContract::class),
+                $this->getContainer()->get(MetaboxContract::class)
+            );
         });
     }
 }

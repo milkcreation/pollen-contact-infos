@@ -12,14 +12,15 @@ use Pollen\ContactInfos\Metabox\ContactInfosMetabox;
 use tiFy\Contracts\Filesystem\LocalFilesystem;
 use tiFy\Support\Concerns\BootableTrait;
 use tiFy\Support\Concerns\ContainerAwareTrait;
+use tiFy\Support\Concerns\MetaboxManagerAwareTrait;
 use tiFy\Support\ParamsBag;
-use tiFy\Support\Proxy\Metabox;
 use tiFy\Support\Proxy\Storage;
 
 class ContactInfos implements ContactInfosContract
 {
     use BootableTrait;
     use ContainerAwareTrait;
+    use MetaboxManagerAwareTrait;
 
     /**
      * Instance de la classe.
@@ -90,8 +91,11 @@ class ContactInfos implements ContactInfosContract
         if (!$this->isBooted()) {
             events()->trigger('contact-infos.booting', [$this]);
 
-            Metabox::registerDriver('contact-infos', (new ContactInfosMetabox())->setContactInfos($this));
-
+            $this->metaboxManager()->registerDriver(
+                'contact-infos',
+                $this->containerHas(ContactInfosMetabox::class)
+                    ? ContactInfosMetabox::class : new ContactInfosMetabox($this, $this->metaboxManager())
+            );
             $this->setBooted();
 
             events()->trigger('contact-infos.booted', [$this]);

@@ -5,18 +5,15 @@ declare(strict_types=1);
 namespace Pollen\ContactInfos\Metabox;
 
 use Illuminate\Support\Collection;
+use Pollen\ContactInfos\Contracts\ContactInfosContract;
 use Pollen\ContactInfos\ContactInfosAwareTrait;
-use tiFy\Contracts\Metabox\MetaboxDriver as MetaboxDriverContract;
+use tiFy\Metabox\Contracts\MetaboxContract;
 use tiFy\Metabox\MetaboxDriver;
+use tiFy\Metabox\MetaboxDriverInterface;
 
 class ContactInfosMetabox extends MetaboxDriver
 {
     use ContactInfosAwareTrait;
-
-    /**
-     * @inheritDoc
-     */
-    protected $alias = 'contact-infos';
 
     /**
      * Liste des instances de champs déclarés.
@@ -29,6 +26,22 @@ class ContactInfosMetabox extends MetaboxDriver
      * @var ContactInfosGroupBag[]|array
      */
     protected $groups = [];
+
+    /**
+     * @inheritDoc
+     */
+    protected $name = 'contact_infos';
+
+    /**
+     * @param ContactInfosContract $contactInfos
+     * @param MetaboxContract $metaboxManager
+     */
+    public function __construct(ContactInfosContract $contactInfos, MetaboxContract $metaboxManager)
+    {
+        $this->setContactInfos($contactInfos);
+
+        parent::__construct($metaboxManager);
+    }
 
     /**
      * Déclaration d'un champ.
@@ -67,50 +80,50 @@ class ContactInfosMetabox extends MetaboxDriver
     /**
      * @inheritDoc
      */
-    public function boot(): MetaboxDriverContract
+    public function boot(): MetaboxDriverInterface
     {
         parent::boot();
 
         $fields = [
             'address1' => [
-                'group'    => 'contact',
-                'title'    => __('Adresse Postale', 'tify')
+                'group' => 'contact',
+                'title' => __('Adresse Postale', 'tify'),
             ],
             'address2' => [
-                'group'    => 'contact',
-                'title'    => __('Adresse complémentaire', 'tify')
+                'group' => 'contact',
+                'title' => __('Adresse complémentaire', 'tify'),
             ],
             'address3' => [
-                'group'    => 'contact',
-                'title'    => __('Informations supplémentaires concernant l\'adresse', 'tify')
+                'group' => 'contact',
+                'title' => __('Informations supplémentaires concernant l\'adresse', 'tify'),
             ],
             'city'     => [
-                'group'    => 'contact',
-                'title'    => __('Ville', 'tify')
+                'group' => 'contact',
+                'title' => __('Ville', 'tify'),
             ],
             'postcode' => [
-                'group'    => 'contact',
-                'title'    => __('Code postal', 'tify')
+                'group' => 'contact',
+                'title' => __('Code postal', 'tify'),
             ],
-            'country'     => [
-                'group'    => 'contact',
-                'title'    => __('Pays', 'tify')
+            'country'  => [
+                'group' => 'contact',
+                'title' => __('Pays', 'tify'),
             ],
             'phone'    => [
-                'group'    => 'contact',
-                'title'    => __('Numéro de téléphone', 'tify')
+                'group' => 'contact',
+                'title' => __('Numéro de téléphone', 'tify'),
             ],
             'fax'      => [
-                'group'    => 'contact',
-                'title'    => __('Numéro de fax', 'tify')
+                'group' => 'contact',
+                'title' => __('Numéro de fax', 'tify'),
             ],
             'email'    => [
-                'group'    => 'contact',
-                'title'    => __('Adresse de messagerie', 'tify')
+                'group' => 'contact',
+                'title' => __('Adresse de messagerie', 'tify'),
             ],
-            'website'    => [
-                'group'    => 'contact',
-                'title'    => __('Site internet', 'tify')
+            'website'  => [
+                'group' => 'contact',
+                'title' => __('Site internet', 'tify'),
             ],
             'map'      => [
                 'group' => 'contact',
@@ -120,38 +133,38 @@ class ContactInfosMetabox extends MetaboxDriver
                 'group' => 'contact',
                 'title' => __('Lien vers la carte interactive', 'theme'),
             ],
-            'name'  => [
-                'group'    => 'company',
-                'title'    => __('Nom de la société', 'tify')
+            'name'     => [
+                'group' => 'company',
+                'title' => __('Nom de la société', 'tify'),
             ],
             'form'     => [
-                'group'    => 'company',
-                'title'    => __('Forme juridique', 'tify')
+                'group' => 'company',
+                'title' => __('Forme juridique', 'tify'),
             ],
             'siren'    => [
-                'group'    => 'company',
-                'title'    => __('Numéro de SIREN', 'tify')
+                'group' => 'company',
+                'title' => __('Numéro de SIREN', 'tify'),
             ],
             'siret'    => [
-                'group'    => 'company',
-                'title'    => __('Numéro de SIRET', 'tify')
+                'group' => 'company',
+                'title' => __('Numéro de SIRET', 'tify'),
             ],
             'tva'      => [
-                'group'    => 'company',
-                'title'    => __('N° de TVA Intracommunautaire', 'tify')
+                'group' => 'company',
+                'title' => __('N° de TVA Intracommunautaire', 'tify'),
             ],
             'ape'      => [
-                'group'    => 'company',
-                'title'    => __('Activité (Code NAF ou APE)', 'tify')
+                'group' => 'company',
+                'title' => __('Activité (Code NAF ou APE)', 'tify'),
             ],
             'cnil'     => [
-                'group'    => 'company',
-                'title'    => __('Déclaration CNIL', 'tify')
+                'group' => 'company',
+                'title' => __('Déclaration CNIL', 'tify'),
             ],
             'opening'  => [
                 'group' => 'company',
                 'title' => __('Horaires d\'ouverture', 'theme'),
-            ]
+            ],
         ];
 
         foreach ($fields as $alias => $field) {
@@ -160,10 +173,10 @@ class ContactInfosMetabox extends MetaboxDriver
 
         $groups = [
             'contact' => [
-                'title'    => __('Informations de contact', 'theme'),
+                'title' => __('Informations de contact', 'theme'),
             ],
             'company' => [
-                'title'    => __('Informations sur la société', 'theme'),
+                'title' => __('Informations sur la société', 'theme'),
             ],
         ];
 
@@ -177,23 +190,15 @@ class ContactInfosMetabox extends MetaboxDriver
     /**
      * @inheritDoc
      */
-    public function defaults(): array
-    {
-        return array_merge(parent::defaults(), [
-            'name'  => 'contact_infos',
-            'title' => __('Informations de contact', 'tify'),
-        ]);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function defaultParams(): array
     {
-        return [
-            'fields' => ['address1', 'address2', 'city', 'postcode', 'phone', 'email'],
-            'groups' => ['contact'],
-        ];
+        return array_merge(
+            parent::defaultParams(),
+            [
+                'fields' => ['address1', 'address2', 'city', 'postcode', 'phone', 'email'],
+                'groups' => ['contact'],
+            ]
+        );
     }
 
     /**
@@ -205,7 +210,7 @@ class ContactInfosMetabox extends MetaboxDriver
      */
     public function getFields(string $group): array
     {
-        $exists = $this->params('fields', []);
+        $exists = $this->get('fields', []);
         $fields = [];
 
         foreach ($exists as $alias) {
@@ -214,9 +219,11 @@ class ContactInfosMetabox extends MetaboxDriver
             }
         }
 
-        return (new Collection($fields))->filter(function ($field) use ($group) {
-            return $field->group === $group;
-        })->sortBy('position')->all();
+        return (new Collection($fields))->filter(
+            function ($field) use ($group) {
+                return $field->group === $group;
+            }
+        )->sortBy('position')->all();
     }
 
     /**
@@ -226,7 +233,7 @@ class ContactInfosMetabox extends MetaboxDriver
      */
     public function getGroups(): array
     {
-        $aliases = $this->params('groups', []);
+        $aliases = $this->get('groups', []);
         $groups = [];
 
         foreach ($aliases as $alias) {
@@ -241,6 +248,14 @@ class ContactInfosMetabox extends MetaboxDriver
     /**
      * @inheritDoc
      */
+    public function getTitle(): string
+    {
+        return $this->title ?? __('Informations de contact', 'tify');
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function render(): string
     {
         $this->set('groups', $this->getGroups());
@@ -248,6 +263,9 @@ class ContactInfosMetabox extends MetaboxDriver
         return parent::render();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function viewDirectory(): string
     {
         return $this->cinfos()->resources('/views/metabox/');
